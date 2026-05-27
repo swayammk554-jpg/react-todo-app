@@ -508,23 +508,21 @@ const [randomQuote] = useState(
 
                       <br />
 
-                      <small>
+                      <div className="deadline">
 
-                      Deadline:
+  📅 Deadline:
 
-                      {
+  {
 
-                        item.deadline
+    item.deadline
 
-                        ? new Date(item.deadline)
+      ? new Date(item.deadline).toLocaleString()
 
-                        .toLocaleString()
+      : "No Deadline"
 
-                        : "No Deadline"
+  }
 
-                      }
-
-                      </small>
+</div>
                       {
 
                         item.deadline &&
