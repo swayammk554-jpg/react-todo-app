@@ -535,11 +535,9 @@ const [randomQuote] = useState(
 
                         && (
 
-                          <p className="reminder">
-
-                            ⚠️ Deadline Passed!
-
-                          </p>
+                          <span className="reminder">
+                          ⚠️ Deadline Passed!
+                          </span>
 
                         )
 
