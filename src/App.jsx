@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+
 import stats from "./components/stats";
 import TaskInput from "./components/TaskInput";
 import TaskCard from "./components/TaskCard";
