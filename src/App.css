@@ -1,0 +1,361 @@
+body {
+
+  overflow-x: hidden;
+
+}
+
+.app {
+
+  min-height: 100vh;
+
+  padding: 30px;
+
+  background-color: #f4f4f4;
+
+  transition: 0.3s;
+
+}
+
+.dark {
+
+  background: linear-gradient(
+
+    135deg,
+
+    #0f0f0f,
+
+    #1a1a1a
+
+  );
+
+  color: white;
+
+}
+
+.container {
+
+  width: 100%;
+
+  max-width: 700px;
+
+  margin: auto;
+
+  box-sizing: border-box;
+
+}
+
+h1 {
+
+  text-align: center;
+
+  margin-bottom: 20px;
+
+}
+
+.title {
+
+  color: #222;
+
+  transition: 0.3s;
+
+}
+
+.dark .title {
+
+  color: #00ffff;
+
+}
+
+.greeting {
+
+  text-align: center;
+
+  margin-top: -10px;
+
+  color: #333;
+
+  transition: 0.3s;
+
+}
+
+.dark .greeting {
+
+  color: #ff4081;
+
+}
+
+.quote {
+
+  text-align: center;
+
+  font-style: italic;
+
+  opacity: 0.8;
+
+  margin-bottom: 25px;
+
+  color: #666;
+
+  transition: 0.3s;
+
+}
+
+.dark .quote {
+
+  color: #ffd369;
+
+}
+
+.stats {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 20px;
+
+}
+
+.input-section {
+
+  display: flex;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 20px;
+
+}
+
+input {
+
+  flex: 1;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+}
+
+.dark input {
+
+  background-color: #2a2a2a;
+
+  color: white;
+
+  border: 1px solid #555;
+
+  outline: none;
+
+}
+
+.dark input::placeholder {
+
+  color: #bdbdbd;
+
+}
+
+button {
+
+  padding: 10px 15px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition: 0.3s;
+
+}
+
+button:hover {
+
+  transform: scale(1.05);
+
+}
+
+.task-card {
+
+  background: white;
+
+  padding: 15px;
+
+  margin-bottom: 15px;
+
+  border-radius: 10px;
+
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  transition: 0.3s;
+
+}
+
+.dark .task-card {
+
+  background: #1e1e1e;
+
+  color: white;
+
+}
+
+.task-buttons {
+
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 10px;
+
+}
+
+.clear-btn {
+
+  margin-top: 20px;
+
+  width: 100%;
+
+}
+
+.clock {
+
+  position: fixed;
+
+  top: 15px;
+
+  right: 105px;
+
+  background-color: #222;
+
+  color: white;
+
+  padding: 10px 15px;
+
+  border-radius: 10px;
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  z-index: 9999;
+
+}
+
+.dark .clock {
+
+  background-color: #00ffff;
+
+  color: black;
+
+}
+
+.reminder {
+
+  color: red;
+
+  font-weight: bold;
+
+  margin-top: 5px;
+
+}
+
+@media (max-width: 768px) {
+
+  .app {
+
+    padding: 15px;
+
+  }
+
+
+
+  .stats {
+
+    flex-direction: column;
+
+    gap: 10px;
+
+  }
+
+
+
+  .input-section {
+
+    flex-direction: column;
+
+  }
+
+
+
+  input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+  }
+
+
+
+  button {
+
+    width: 100%;
+
+  }
+
+
+
+  .task-buttons {
+
+    flex-direction: column;
+
+  }
+
+
+
+  .clock {
+
+    top: 10px;
+
+    right: 10px;
+
+    font-size: 14px;
+
+    padding: 8px 12px;
+
+  }
+
+
+
+  .title {
+
+    font-size: 28px;
+
+  }
+
+
+
+  .greeting {
+
+    font-size: 20px;
+
+  }
+
+
+
+  .quote {
+
+    font-size: 14px;
+
+  }
+
+}
