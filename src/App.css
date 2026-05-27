@@ -141,6 +141,16 @@ button:hover {
   border-radius: 15px;
   margin-bottom: 15px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  cursor: grab;
+  transition: 0.2s;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card:hover {
+  transform: scale(1.01);
 }
 
 .dark .task-card {
@@ -231,4 +241,99 @@ button:hover {
 input[type="datetime-local"] {
   background: white;
   color: black;
+}
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.filter-buttons button {
+  flex: 1;
+  min-width: 120px;
+}
+select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.dark select {
+  background: #2b2b2b;
+  color: white;
+  border: 1px solid #555;
+}
+
+.priority {
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.High {
+  background: #ff4d4d;
+  color: white;
+}
+
+.Medium {
+  background: #ffd369;
+  color: black;
+}
+
+.Low {
+  background: #4caf50;
+  color: white;
+}
+.category {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: white;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.dark .category {
+  background: #7c4dff;
+}
+.task-card {
+  cursor: grab;
+  transition: 0.2s;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card:hover {
+  transform: scale(1.01);
+}
+@media (max-width: 480px) {
+
+  .title {
+    font-size: 24px;
+  }
+
+  .greeting {
+    font-size: 20px;
+  }
+
+  .quote {
+    font-size: 14px;
+  }
+
+  .clock {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .stats p {
+    font-size: 14px;
+  }
+
 }

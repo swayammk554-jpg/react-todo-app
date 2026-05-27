@@ -1,58 +1,100 @@
 import "./App.css";
 
 import { useState, useEffect } from "react";
+
+
 function App() {
+
+  // =========================
+  // STATES
+  // =========================
 
   const [task, setTask] = useState("");
 
-  const [darkMode, setDarkMode] = useState(
-
-  function() {
-
-    const savedTheme = localStorage.getItem("darkMode");
-
-    return savedTheme === "true";
-
-  }
-
-);
-
   const [search, setSearch] = useState("");
-
-  const [time, setTime] = useState(new Date());
 
   const [deadline, setDeadline] = useState("");
 
+  const [priority, setPriority] = useState("Medium");
+
+  const [category, setCategory] = useState("Personal");
+
+  const [filter, setFilter] = useState("all");
+
+  const [time, setTime] = useState(new Date());
+
+  const [editIndex, setEditIndex] = useState(null);
+
+  // DARK MODE
+
+  const [darkMode, setDarkMode] = useState(
+    function () {
+
+      const savedTheme =
+        localStorage.getItem("darkMode");
+
+      return savedTheme === "true";
+
+    }
+  );
+
+  // TASKS
+
   const [tasks, setTasks] = useState(
 
-    function() {
+    function () {
 
-      const savedTasks = localStorage.getItem("tasks");
+      const savedTasks =
+        localStorage.getItem("tasks");
 
-      return savedTasks
-
+      const parsedTasks = savedTasks
         ? JSON.parse(savedTasks)
-
         : [];
+
+      return parsedTasks.map(
+        function (item, index) {
+
+          return {
+
+            id:
+              item.id ||
+              Date.now() + index,
+
+            text:
+              item.text || "",
+
+            completed:
+              item.completed || false,
+
+            deadline:
+              item.deadline || "",
+
+            priority:
+              item.priority || "Medium",
+
+            category:
+              item.category || "Personal"
+
+          };
+
+        }
+      );
 
     }
 
   );
 
-  const [editIndex, setEditIndex] = useState(null);
-
-
+  // =========================
+  // SAVE TASKS
+  // =========================
 
   useEffect(
 
-    function() {
+    function () {
 
       localStorage.setItem(
-
         "tasks",
-
         JSON.stringify(tasks)
-
       );
 
     },
@@ -61,68 +103,72 @@ function App() {
 
   );
 
+  // =========================
+  // SAVE DARK MODE
+  // =========================
+
   useEffect(
 
-  function() {
+    function () {
 
-    localStorage.setItem(
+      localStorage.setItem(
+        "darkMode",
+        darkMode
+      );
 
-      "darkMode",
+    },
 
-      darkMode
+    [darkMode]
 
-    );
+  );
 
-  },
+  // =========================
+  // CLOCK
+  // =========================
 
-  [darkMode]
+  useEffect(
 
-);
+    function () {
 
-useEffect(
+      const timer = setInterval(
 
-  function() {
+        function () {
 
-    const timer = setInterval(
+          setTime(new Date());
 
-      function() {
+        },
 
-        setTime(new Date());
+        1000
 
-      },
+      );
 
-      1000
+      return function () {
 
-    );
+        clearInterval(timer);
 
+      };
 
+    },
 
-    return function() {
+    []
 
-      clearInterval(timer);
+  );
 
-    };
-
-  },
-
-  []
-
-);
-
-
+  // =========================
+  // ADD TASK
+  // =========================
 
   function addTask() {
 
     if (task.trim() === "") return;
 
-
-
     // EDIT MODE
+
     if (editIndex !== null) {
 
       const updatedTasks = tasks.map(
 
-        function(item, index) {
+        function (item, index) {
 
           if (index === editIndex) {
 
@@ -130,7 +176,13 @@ useEffect(
 
               ...item,
 
-              text: task
+              text: task,
+
+              deadline: deadline,
+
+              priority: priority,
+
+              category: category
 
             };
 
@@ -142,8 +194,6 @@ useEffect(
 
       );
 
-
-
       setTasks(updatedTasks);
 
       setEditIndex(null);
@@ -151,6 +201,7 @@ useEffect(
     }
 
     // ADD MODE
+
     else {
 
       setTasks([
@@ -159,11 +210,17 @@ useEffect(
 
         {
 
+          id: Date.now(),
+
           text: task,
 
           completed: false,
 
-          deadline:deadline
+          deadline: deadline,
+
+          priority: priority,
+
+          category: category
 
         }
 
@@ -171,21 +228,25 @@ useEffect(
 
     }
 
-
-
     setTask("");
 
     setDeadline("");
 
+    setPriority("Medium");
+
+    setCategory("Personal");
+
   }
 
-
+  // =========================
+  // DELETE TASK
+  // =========================
 
   function deleteTask(indexToDelete) {
 
     const updatedTasks = tasks.filter(
 
-      function(item, index) {
+      function (item, index) {
 
         return index !== indexToDelete;
 
@@ -193,29 +254,37 @@ useEffect(
 
     );
 
-
-
     setTasks(updatedTasks);
 
   }
 
-
+  // =========================
+  // EDIT TASK
+  // =========================
 
   function editTask(index) {
 
     setTask(tasks[index].text);
 
+    setDeadline(tasks[index].deadline);
+
+    setPriority(tasks[index].priority);
+
+    setCategory(tasks[index].category);
+
     setEditIndex(index);
 
   }
 
-
+  // =========================
+  // TOGGLE COMPLETE
+  // =========================
 
   function toggleComplete(indexToToggle) {
 
     const updatedTasks = tasks.map(
 
-      function(item, index) {
+      function (item, index) {
 
         if (index === indexToToggle) {
 
@@ -235,403 +304,548 @@ useEffect(
 
     );
 
-
-
     setTasks(updatedTasks);
 
   }
+
+  // =========================
+  // DARK MODE
+  // =========================
+
   function toggleDarkMode() {
 
-  setDarkMode(!darkMode);
-
-}
-
-function clearAllTasks() {
-
-  setTasks([]);
-
-}
-const filteredTasks = tasks.filter(
-
-  function(item) {
-
-    return item.text
-
-      .toLowerCase()
-
-      .includes(
-
-        search.toLowerCase()
-
-      );
+    setDarkMode(!darkMode);
 
   }
 
-);
+  // =========================
+  // CLEAR ALL
+  // =========================
 
-const hour = new Date().getHours();
+  function clearAllTasks() {
 
-let greeting = "";
-
-if (hour < 12) {
-
-  greeting = "Good Morning ☀️";
-
-}
-
-else if (hour < 18) {
-
-  greeting = "Good Afternoon 🌤️";
-
-}
-
-else {
-
-  greeting = "Good Evening 🌙";
-
-}
-
-const quotes = [
-
-  "Stay consistent 🚀",
-
-  "Small progress is still progress 💪",
-
-  "Code. Learn. Repeat 🔥",
-
-  "Discipline beats motivation ⚡",
-
-  "Every expert was once a beginner 🌱"
-
-];
-
-const [randomQuote] = useState(
-
-  quotes[
-
-    Math.floor(
-
-      Math.random() * quotes.length
-
-    )
-
-  ]
-
-);
-
-  return (
-
-  <div className={darkMode ? "app dark" : "app"}>
-
-    <div className="clock">
-
-  {
-
-    time.toLocaleTimeString()
+    setTasks([]);
 
   }
 
-  </div>  
-
-    <div className="container">
-
-      <h1 className="title">Todo App</h1>
-      
-      <br/>
-
-      <h2 className="greeting">
-
-      {greeting}
-
-      </h2>
-
-      <p className="quote">
-
-      {randomQuote}
-
-      </p>
-
-      <button onClick={toggleDarkMode}>
-
-        {
-
-          darkMode
-
-            ? "Light Mode"
-
-            : "Dark Mode"
-
-        }
-
-      </button>
+  // =========================
+  // DRAG & DROP
+  // =========================
 
 
+  // =========================
+  // FILTER TASKS
+  // =========================
 
-      <div className="stats">
+  const filteredTasks = tasks.filter(
 
-        <p>Total Tasks: {tasks.length}</p>
+    function (item) {
 
-        <p>
-          Completed Tasks:
-          {
+      const matchesSearch =
+        item.text
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          );
 
-            tasks.filter(function(item) {
+      if (filter === "completed") {
 
-              return item.completed;
+        return (
+          matchesSearch &&
+          item.completed
+        );
 
-            }).length
+      }
 
-          }
-        </p>
+      if (filter === "pending") {
 
-        <p>
-          Remaining Tasks:
-          {
+        return (
+          matchesSearch &&
+          !item.completed
+        );
 
-            tasks.filter(function(item) {
+      }
 
-              return !item.completed;
-
-            }).length
-
-          }
-        </p>
-
-      </div>
-
-
-
-      <div className="input-section">
-
-        <input
-          type="text"
-          placeholder="Search tasks"
-
-          value={search}
-
-          onChange={function(e) {
-
-            setSearch(e.target.value);
-
-          }}
-        />
-
-
-
-       <input
-  type="text"
-  placeholder="Enter task"
-
-  value={task}
-
-  onChange={function(e) {
-
-    setTask(e.target.value);
-
-  }}
-
-  onKeyDown={function(e) {
-
-    if (e.key === "Enter") {
-
-      addTask();
+      return matchesSearch;
 
     }
 
-  }}
-/>
+  );
 
-<input
-  type="datetime-local"
+  // =========================
+  // GREETING
+  // =========================
 
-  value={deadline}
+  const hour = new Date().getHours();
 
-  onChange={function(e) {
+  let greeting = "";
 
-    setDeadline(e.target.value);
+  if (hour < 12) {
 
-  }}
-/>
+    greeting = "Good Morning ☀️";
 
+  }
 
-        <button onClick={addTask}>
+  else if (hour < 18) {
+
+    greeting = "Good Afternoon 🌤️";
+
+  }
+
+  else {
+
+    greeting = "Good Evening 🌙";
+
+  }
+
+  // =========================
+  // QUOTES
+  // =========================
+
+  const quotes = [
+
+    "Stay consistent 🚀",
+
+    "Small progress is still progress 💪",
+
+    "Code. Learn. Repeat 🔥",
+
+    "Discipline beats motivation ⚡",
+
+    "Every expert was once a beginner 🌱"
+
+  ];
+
+  const [randomQuote] = useState(
+
+    quotes[
+      Math.floor(
+        Math.random() * quotes.length
+      )
+    ]
+
+  );
+
+  // =========================
+  // RETURN
+  // =========================
+
+  return (
+
+    <div className={darkMode ? "app dark" : "app"}>
+
+      {/* CLOCK */}
+
+      <div className="clock">
+
+        {
+          time.toLocaleTimeString()
+        }
+
+      </div>
+
+      <div className="container">
+
+        {/* TITLE */}
+
+        <h1 className="title">
+
+          Todo App
+
+        </h1>
+
+        {/* GREETING */}
+
+        <h2 className="greeting">
+
+          {greeting}
+
+        </h2>
+
+        {/* QUOTE */}
+
+        <p className="quote">
+
+          {randomQuote}
+
+        </p>
+
+        {/* DARK MODE BUTTON */}
+
+        <button onClick={toggleDarkMode}>
 
           {
-
-            editIndex !== null
-
-              ? "Update"
-
-              : "Add"
-
+            darkMode
+              ? "Light Mode"
+              : "Dark Mode"
           }
 
         </button>
 
-      </div>
+        {/* FILTER BUTTONS */}
 
+        <div className="filter-buttons">
 
+          <button onClick={function () {
 
-      {
+            setFilter("all");
 
-        tasks.length === 0
+          }}>
 
-          ? (
-
-              <p>No Tasks Available</p>
-
-            )
-
-          : (
-
-              filteredTasks.map(function(item, index) {
-
-                return (
-
-                  <div key={index} className="task-card">
-
-                    <p
-                      style={{
-
-                        textDecoration:
-
-                          item.completed
-
-                            ? "line-through"
-
-                            : "none"
-
-                      }}
-                    >
-
-                      {item.text}
-
-                      <br />
-
-                      <div className="deadline">
-
-  📅 Deadline:
-
-  {
-
-    item.deadline
-
-      ? new Date(item.deadline).toLocaleString()
-
-      : "No Deadline"
-
-  }
-
-</div>
-                      {
-
-                        item.deadline &&
-
-                        !item.completed &&
-
-                        new Date(item.deadline) < new Date()
-
-                        && (
-
-                          <span className="reminder">
-                          ⚠️ Deadline Passed!
-                          </span>
-
-                        )
-
-                      }
-
-                    </p>
-
-
-
-                    <div className="task-buttons">
-
-                      <button
-                        onClick={function() {
-
-                          editTask(index);
-
-                        }}
-                      >
-
-                        Edit
-
-                      </button>
-
-
-
-                      <button
-                        onClick={function() {
-
-                          deleteTask(index);
-
-                        }}
-                      >
-
-                        Delete
-
-                      </button>
-
-
-
-                      <button
-                        onClick={function() {
-
-                          toggleComplete(index);
-
-                        }}
-                      >
-
-                        {
-
-                          item.completed
-
-                            ? "Undo"
-
-                            : "Complete"
-
-                        }
-
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                );
-
-              })
-
-            )
-
-      }
-
-
-
-      {
-
-        tasks.length > 0 && (
-
-          <button
-            className="clear-btn"
-
-            onClick={clearAllTasks}
-          >
-
-            Clear All
+            All
 
           </button>
 
-        )
+          <button onClick={function () {
 
-      }
+            setFilter("completed");
+
+          }}>
+
+            Completed
+
+          </button>
+
+          <button onClick={function () {
+
+            setFilter("pending");
+
+          }}>
+
+            Pending
+
+          </button>
+
+        </div>
+
+        {/* STATS */}
+
+        <div className="stats">
+
+          <p>
+
+            Total:
+            {tasks.length}
+
+          </p>
+
+          <p>
+
+            Completed:
+            {
+              tasks.filter(function (item) {
+
+                return item.completed;
+
+              }).length
+            }
+
+          </p>
+
+          <p>
+
+            Remaining:
+            {
+              tasks.filter(function (item) {
+
+                return !item.completed;
+
+              }).length
+            }
+
+          </p>
+
+        </div>
+
+        {/* INPUT SECTION */}
+
+        <div className="input-section">
+
+          {/* SEARCH */}
+
+          <input
+            type="text"
+            placeholder="Search tasks"
+            value={search}
+            onChange={function (e) {
+
+              setSearch(e.target.value);
+
+            }}
+          />
+
+          {/* TASK */}
+
+          <input
+            type="text"
+            placeholder="Enter task"
+            value={task}
+            onChange={function (e) {
+
+              setTask(e.target.value);
+
+            }}
+            onKeyDown={function (e) {
+
+              if (e.key === "Enter") {
+
+                addTask();
+
+              }
+
+            }}
+          />
+
+          {/* DEADLINE */}
+
+          <input
+            type="datetime-local"
+            value={deadline}
+            onChange={function (e) {
+
+              setDeadline(e.target.value);
+
+            }}
+          />
+
+          {/* PRIORITY */}
+
+          <select
+            value={priority}
+            onChange={function (e) {
+
+              setPriority(e.target.value);
+
+            }}
+          >
+
+            <option value="High">
+
+              High Priority
+
+            </option>
+
+            <option value="Medium">
+
+              Medium Priority
+
+            </option>
+
+            <option value="Low">
+
+              Low Priority
+
+            </option>
+
+          </select>
+
+          {/* CATEGORY */}
+
+          <select
+            value={category}
+            onChange={function (e) {
+
+              setCategory(e.target.value);
+
+            }}
+          >
+
+            <option value="Personal">
+
+              Personal
+
+            </option>
+
+            <option value="Study">
+
+              Study
+
+            </option>
+
+            <option value="Work">
+
+              Work
+
+            </option>
+
+            <option value="Shopping">
+
+              Shopping
+
+            </option>
+
+          </select>
+
+          {/* ADD BUTTON */}
+
+          <button onClick={addTask}>
+
+            {
+              editIndex !== null
+                ? "Update"
+                : "Add"
+            }
+
+          </button>
+
+        </div>
+
+        {/* TASK LIST */}
+
+        {
+  tasks.length === 0
+
+    ? (
+
+      <p>No Tasks Available</p>
+
+    )
+
+    : (
+
+      filteredTasks.map(function (item, index) {
+
+        return (
+
+          <div
+            key={item.id}
+            className="task-card"
+          >
+
+            <p
+              style={{
+
+                textDecoration:
+                  item.completed
+                    ? "line-through"
+                    : "none"
+
+              }}
+            >
+
+              {item.text}
+
+            </p>
+
+            <div className="deadline">
+
+              📅 Deadline:
+
+              {
+                item.deadline
+                  ? new Date(
+                      item.deadline
+                    ).toLocaleString()
+                  : " No Deadline"
+              }
+
+            </div>
+
+            {
+              item.deadline &&
+              !item.completed &&
+              new Date(item.deadline) < new Date()
+              && (
+
+                <span className="reminder">
+
+                  ⚠️ Deadline Passed!
+
+                </span>
+
+              )
+            }
+
+            <div
+              className={`priority ${item.priority}`}
+            >
+
+              Priority:
+              {item.priority}
+
+            </div>
+
+            <div className="category">
+
+              📂 {item.category}
+
+            </div>
+
+            <div className="task-buttons">
+
+              <button
+                onClick={function () {
+
+                  editTask(index);
+
+                }}
+              >
+
+                Edit
+
+              </button>
+
+              <button
+                onClick={function () {
+
+                  deleteTask(index);
+
+                }}
+              >
+
+                Delete
+
+              </button>
+
+              <button
+                onClick={function () {
+
+                  toggleComplete(index);
+
+                }}
+              >
+
+                {
+                  item.completed
+                    ? "Undo"
+                    : "Complete"
+                }
+
+              </button>
+
+            </div>
+
+          </div>
+
+        );
+
+      })
+
+    )
+}
+        {/* CLEAR BUTTON */}
+
+        {
+          tasks.length > 0 && (
+
+            <button
+              className="clear-btn"
+              onClick={clearAllTasks}
+            >
+
+              Clear All
+
+            </button>
+
+          )
+        }
+
+      </div>
 
     </div>
 
-  </div>
+  );
 
-);
 }
 
 export default App;
