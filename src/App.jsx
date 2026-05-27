@@ -1,8 +1,8 @@
-import header from "./components/Header";
-import stats from "./components/Stats";
+import header from "./components/header";
+import stats from "./components/stats";
 import TaskInput from "./components/TaskInput";
 import TaskCard from "./components/TaskCard";
-import clock from "./components/Clock";
+import clock from "./components/clock";
 
 
 import "./App.css";
