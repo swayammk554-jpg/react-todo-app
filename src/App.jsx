@@ -1,14 +1,6 @@
-
-import stats from "./components/stats";
-import TaskInput from "./components/TaskInput";
-import TaskCard from "./components/TaskCard";
-import clock from "./components/clock";
-
-
 import "./App.css";
 
 import { useState, useEffect } from "react";
-
 function App() {
 
   const [task, setTask] = useState("");
